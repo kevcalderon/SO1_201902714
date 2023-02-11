@@ -1,6 +1,7 @@
 package main
 
 import (
+	"database/sql"
 	"encoding/json"
 	"fmt"
 	"net/http"
@@ -20,7 +21,15 @@ type Response struct {
 	Valor float64 `json:"valor"`
 }
 
-/*
+type Result struct {
+	ID        string `json:"id"`
+	Numero1   string `json:"numero1"`
+	Numero2   string `json:"numero2"`
+	Simbolo   string `json:"simbolo"`
+	Resultado string `json:"resultado"`
+	Fecha     string `json:"fecha"`
+}
+
 func connectionDatabase() (db *sql.DB, e error) {
 	usuario := "root"
 	pass := "root"
@@ -33,7 +42,7 @@ func connectionDatabase() (db *sql.DB, e error) {
 	}
 	return db, nil
 
-}*/
+}
 
 func enableCORS(router *mux.Router) {
 	router.PathPrefix("/").HandlerFunc(func(w http.ResponseWriter, req *http.Request) {
@@ -56,9 +65,9 @@ func middlewareCors(next http.Handler) http.Handler {
 }
 
 func main() {
-	/*db, err := connectionDatabase()
+	db, err := connectionDatabase()
 	if err != nil {
-		fmt.Printf("Error obteniendo base de datos: %v", err)
+		fmt.Println("Error obteniendo base de datos: %v", err)
 		return
 	}
 	// Terminar conexión al terminar función
@@ -67,9 +76,9 @@ func main() {
 	// Ahora vemos si tenemos conexión
 	err = db.Ping()
 	if err != nil {
-		fmt.Printf("Error conectando: %v", err)
+		fmt.Println("Error conectando: %v", err)
 		return
-	}*/
+	}
 
 	router := mux.NewRouter()
 	enableCORS(router)
@@ -77,6 +86,28 @@ func main() {
 	/*PETICION GET INIT*/
 	router.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprintln(w, "Hola, bienvenido a mi API REST en Go!")
+	}).Methods("GET")
+
+	/*PETICION PARA LOGS*/
+	router.HandleFunc("/logs", func(w http.ResponseWriter, r *http.Request) {
+		var arrayResult []*Result
+		sql := "SELECT * FROM Log"
+		results, err := db.Query(sql)
+		if err != nil {
+			fmt.Println("Error a hacer query")
+			return
+		}
+
+		for results.Next() {
+			res := &Result{}
+
+			err = results.Scan(&res.ID, &res.Numero1, &res.Numero2, &res.Simbolo, &res.Resultado, &res.Fecha)
+			arrayResult = append(arrayResult, res)
+		}
+
+		w.WriteHeader(http.StatusOK)
+		json.NewEncoder(w).Encode(arrayResult)
+
 	}).Methods("GET")
 
 	/*PETICION POST PARA CALCULAR OPERACIONES*/
@@ -108,6 +139,15 @@ func main() {
 
 		}
 
+		stmt, err := db.Prepare("INSERT INTO Log(numero1,numero2,operacion,resultado) values(?,?,?,?);")
+		res, err := stmt.Exec(op.Numero1, op.Numero2, op.Simbolo, resultado)
+		fmt.Println(res)
+
+		if err != nil {
+			fmt.Println(err)
+			return
+		}
+
 		response := Response{Valor: resultado}
 
 		w.WriteHeader(http.StatusOK)
@@ -115,9 +155,10 @@ func main() {
 	}).Methods("POST")
 
 	fmt.Println("API iniciado en el puerto 8080")
-	err := http.ListenAndServe(":8080", router)
-	if err != nil {
-		fmt.Println(err)
+	fmt.Println("Connection database succesfull!")
+	err1 := http.ListenAndServe(":8080", router)
+	if err1 != nil {
+		fmt.Println(err1)
 	}
 
 }

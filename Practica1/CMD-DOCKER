@@ -1,12 +1,18 @@
 PARA ACCEDER A BASE DE DATOS IT
 sudo docker pull mysql
-sudo docker run --name practica1db -p 3306:3306 -e MYSQL_ROOT_PASSWORD=root -d mysql
-sudo docker exec -it practica1db mysql -uroot -proot
+sudo docker run --name mysqldb -p 3306:3306 -e MYSQL_ROOT_PASSWORD=root -d mysql
+sudo docker exec -it mysqldb mysql -uroot -proot
 
 PARA CREAR IMAGEN PARA API
 sudo docker build -t practica1api .
 sudo docker run -p 8080:8080  practica1api
 
+
+PARA SUBIR IMAGENES A DOCKER HUB
+sudo docker push <user/name>
+
+LEVANTAR UN CONTENEDOR EXISTENTE POR SEPARADO LUEGO DE LEVANTAR CON COMPOSE
+sudo docker start <nombre>
 
 
 QUERY DATABASE
@@ -14,11 +20,15 @@ create database sopes1practica1db;
 use sopes1practica1db;
 
 create table Log(
-    idLog integer auto_increment primary key,
-    descripcion varchar(255) not null
+    id integer auto_increment primary key,
+    numero1 varchar(50) not null,
+    numero2 varchar(50) not null,
+    operacion varchar(50) not null,
+    resultado varchar(50) not null,
+    fechahora DATETIME DEFAULT NOW()
 );
 
-insert into Log(descripcion) values("se hizo la operacion suma");
+insert into Log(numero1,numero2,operacion,resultado) values("1","1","+","2");
 
 select * from Log;
 

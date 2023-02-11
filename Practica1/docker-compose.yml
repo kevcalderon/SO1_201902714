@@ -1,0 +1,43 @@
+version: "3"
+services:
+
+  mysqldb:
+    container_name: mysqldb
+    image: mysql
+    restart: always
+    environment:
+      MYSQL_PASSWORD: 'root'
+      MYSQL_ROOT_PASSWORD: 'root'
+    ports: 
+      - '3306:3306'
+    networks:
+      - app_net
+    volumes:
+      - mysql-vol:/var/lib/mysql
+
+  backend:
+    container_name: backend
+    restart: always
+    image: kevcalderon/so1-practica1back
+    ports:
+      - "8080:8080"
+    networks:
+      - app_net
+    
+  frontend:
+    container_name: frontend
+    restart: always
+    image: kevcalderon/so1-practica1front
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+    networks:
+      - app_net
+
+networks:
+  app_net:
+    driver: bridge
+
+volumes:
+  mysql-vol: 

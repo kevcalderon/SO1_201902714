@@ -5,6 +5,9 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"os"
+	"strconv"
+	"time"
 
 	_ "github.com/go-sql-driver/mysql"
 
@@ -18,7 +21,7 @@ type operation struct {
 }
 
 type Response struct {
-	Valor float64 `json:"valor"`
+	Valor string `json:"valor"`
 }
 
 type Result struct {
@@ -33,7 +36,7 @@ type Result struct {
 func connectionDatabase() (db *sql.DB, e error) {
 	usuario := "root"
 	pass := "root"
-	host := "tcp(localhost:3306)"
+	host := "tcp(mysqldb:3306)"
 	nombreBaseDeDatos := "sopes1practica1db"
 
 	db, err := sql.Open("mysql", fmt.Sprintf("%s:%s@%s/%s", usuario, pass, host, nombreBaseDeDatos))
@@ -64,12 +67,18 @@ func middlewareCors(next http.Handler) http.Handler {
 		})
 }
 
+func writeFile(file *os.File, numero1 string, numero2 string, operacion string, result string) {
+	file.WriteString(numero1 + "," + numero2 + "," + operacion + "," + result + "," + time.Now().Format("02/01/2006") + "\n")
+}
+
 func main() {
+
 	db, err := connectionDatabase()
 	if err != nil {
 		fmt.Println("Error obteniendo base de datos: %v", err)
 		return
 	}
+
 	// Terminar conexión al terminar función
 	defer db.Close()
 
@@ -115,7 +124,7 @@ func main() {
 
 		var op operation
 		var resultado float64
-
+		var strResultado string
 		// Decodifica los datos recibidos en el cuerpo de la petición como JSON
 		err := json.NewDecoder(r.Body).Decode(&op)
 
@@ -124,23 +133,30 @@ func main() {
 			return
 		}
 
+		// Opera los numeros y devuelve un resultado.
 		switch op.Simbolo {
 		case "+":
 			resultado = float64(op.Numero1) + float64(op.Numero2)
+			strResultado = strconv.FormatFloat(resultado, 'f', -1, 64)
+
 		case "-":
 			resultado = float64(op.Numero1) - float64(op.Numero2)
+			strResultado = strconv.FormatFloat(resultado, 'f', -1, 64)
 		case "/":
 			resultado = float64(op.Numero1) / float64(op.Numero2)
+			strResultado = strconv.FormatFloat(resultado, 'f', -1, 64)
 			if op.Numero2 == 0 {
-				resultado = 0
+				strResultado = "Math Error!"
 			}
 		case "*":
 			resultado = float64(op.Numero1) * float64(op.Numero2)
+			strResultado = strconv.FormatFloat(resultado, 'f', -1, 64)
 
 		}
 
+		//Realiza el insert a base de datos.
 		stmt, err := db.Prepare("INSERT INTO Log(numero1,numero2,operacion,resultado) values(?,?,?,?);")
-		res, err := stmt.Exec(op.Numero1, op.Numero2, op.Simbolo, resultado)
+		res, err := stmt.Exec(op.Numero1, op.Numero2, op.Simbolo, strResultado)
 		fmt.Println(res)
 
 		if err != nil {
@@ -148,8 +164,31 @@ func main() {
 			return
 		}
 
-		response := Response{Valor: resultado}
+		//Crear el archivo
+		filename := "shared/history.log"
+		//verificar si el archivo existe
+		if _, err := os.Stat(filename); os.IsNotExist(err) {
+			file, err := os.Create(filename)
+			if err != nil {
+				fmt.Println("Error al crear el archivo: ", err)
+				return
+			}
+			defer file.Close()
+			writeFile(file, strconv.FormatFloat(op.Numero1, 'f', -1, 64), strconv.FormatFloat(op.Numero2, 'f', -1, 64), op.Simbolo, strResultado)
+			fmt.Println("Archivo creado con exito.")
+		} else {
+			file, err := os.OpenFile(filename, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+			if err != nil {
+				fmt.Println("Error al abrir el archivo: ", err)
+				return
+			}
+			defer file.Close()
+			writeFile(file, strconv.FormatFloat(op.Numero1, 'f', -1, 64), strconv.FormatFloat(op.Numero2, 'f', -1, 64), op.Simbolo, strResultado)
+			fmt.Println("Se escribio en el archivo correctamente.")
 
+		}
+
+		response := Response{Valor: strResultado}
 		w.WriteHeader(http.StatusOK)
 		json.NewEncoder(w).Encode(response)
 	}).Methods("POST")

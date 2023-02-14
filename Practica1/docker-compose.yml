@@ -6,38 +6,61 @@ services:
     image: mysql
     restart: always
     environment:
-      MYSQL_PASSWORD: 'root'
-      MYSQL_ROOT_PASSWORD: 'root'
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=sopes1practica1db
     ports: 
-      - '3306:3306'
+      - 3306:33060
     networks:
       - app_net
     volumes:
       - mysql-vol:/var/lib/mysql
 
   backend:
+    depends_on:
+      - mysqldb
     container_name: backend
     restart: always
-    image: kevcalderon/so1-practica1back
+    image: kevcalderon/backend_practica1_201902714
     ports:
       - "8080:8080"
     networks:
       - app_net
-    
+    links:
+      - mysqldb
+    volumes:
+      - shared:/app/shared  
+
+
   frontend:
+    depends_on:
+      - backend
     container_name: frontend
     restart: always
-    image: kevcalderon/so1-practica1front
+    image: kevcalderon/frontend_practica1_201902714
     ports:
       - "3000:80"
-    depends_on:
+    links:
       - backend
     networks:
       - app_net
+  
+  pcubuntu:
+    container_name: pcubuntu
+    image: ubuntu
+    restart: on-failure
+    command: ["sleep","infinity"]
+    networks:
+      - app_net
+    volumes:
+      - shared:/app/shared  
+    
 
 networks:
   app_net:
     driver: bridge
 
 volumes:
-  mysql-vol: 
+  mysql-vol:
+  shared:
+   
+    

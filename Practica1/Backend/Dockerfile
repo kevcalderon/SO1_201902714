@@ -3,11 +3,12 @@ FROM golang:alpine
 WORKDIR /app
 
 COPY . .
+COPY history.log /app/shared/
 
 RUN go mod init backend
 RUN go get -u github.com/go-sql-driver/mysql
 RUN go get -u github.com/gorilla/mux
-RUN go get -u github.com/gorilla/handlers
+
 
 CMD ["go","run","server.go"]
 

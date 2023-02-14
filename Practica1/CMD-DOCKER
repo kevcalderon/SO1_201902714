@@ -14,6 +14,13 @@ sudo docker push <user/name>
 LEVANTAR UN CONTENEDOR EXISTENTE POR SEPARADO LUEGO DE LEVANTAR CON COMPOSE
 sudo docker start <nombre>
 
+ACCEDER A UBUNTU CORRIENDO
+sudo docker exec -it pcubuntu bash
+
+ACCEDER A CONTAINER CORRIENDO
+sudo docker exec -it backend sh
+
+
 
 QUERY DATABASE
 create database sopes1practica1db;

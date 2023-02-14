@@ -1,10 +1,16 @@
 # Manual Técnico :boom:
 
-La aplicación es un sistema que contará con tres componentes principales:  **un frontend, un backend y una base de datos.** El frontend se encargará de una interfaz gráfica de usuario para interactuar con el usuario y presentar la información de la aplicación de manera clara y atractiva.
+La aplicación es un sistema de calculadora básica que contará con tres componentes principales:  **un frontend, un backend y una base de datos.** El frontend se encargará de una interfaz gráfica de usuario para interactuar con el usuario y presentar la información de la aplicación de manera clara y atractiva.
 El backend, por su parte, se encargará de la lógica de negocio y de la comunicación con la base de datos. Este componente será responsable de procesar y almacenar la información que recibe desde el frontend y devolver la información necesaria para su visualización en el frontend.
 La base de datos, finalmente, será el repositorio de datos de la aplicación. Este componente almacenará toda la información necesaria para el funcionamiento de la aplicación, y será accedido por el backend para procesar y almacenar la información.
 Y un contenedor extra para realizar las practicas de shell de Ubuntu.
 Todos estos componentes serán desplegados mediante el uso de contenedores, utilizando una tecnología como **Docker**.
+
+Las tecnologias utilizadas para realizar esta practica son:
+* React 
+* Go
+* MySQL
+* Ubuntu (S.O)
 
 # Dockerfile - backend :whale:
 ```
@@ -152,3 +158,39 @@ volumes:
 
 
 ![image](https://jhymer.dev/content/images/2020/05/docker-compose-1.png)
+
+# Contenedor de Ubuntu
+Este contenedor se implementó con el fin de realizar practicas sobre script en bash. En este caso, se utiliza para leer un archivo y por medio de comandos en shell obtener unos reportes especificos. El archivo se obtiene por comparte por medio de volumenes compartidos, el archivo se crea y se actualiza en el contenedor del backend, posteriormente en el contenedor de ubuntu, se lee y se realiza los reportes. 
+Se creo un archivo "history.log" con el formato de:
+```
+numero1,numero2,operacion,resultado,fecha
+```
+Los comandos en shell que se realizaron son los siguientes:
+```
+#Cantidad total de logs registrados.
+echo "La cantidad de logs registros son: $(wc -l history.log)"
+
+#Cantidad total de operaciones que resultaron en error.
+echo "La cantidad de errores fueron: $(grep -o "Math Error!" history.log | wc -l)"
+
+#Cantidad de operaciones por separado, es decir, número de sumas, restas, multiplicaciones y divisiones.
+
+#suma
+echo "La cantidad de sumas que hay en el archivo son: $(grep '+' history.log | wc -l)"
+
+#resta
+echo "La cantidad de restas que hay en el archivo son: $(grep ',-,' history.log | wc -l)"
+
+#division
+echo "La cantidad de divisiones que hay en el archivo son: $(grep -c ',/,' history.log | wc -l)"
+
+#multiplicacion
+echo "La cantidad de multiplicaciones que hay en el archivo son: $(grep '*' history.log | wc -l)"
+
+#Mostrar los logs del día de hoy.
+$fecha="13/02/2023"
+echo "La cantidad de logs segun la fecha $fecha fueron: $(grep -o $fecha history.log | wc -l)"
+```
+Los comandos mas utilizados son grep y wc
+* **grep**, usualmente, grep toma una expresión regular de la línea de comandos, lee la entrada estándar o una lista de archivos, e imprime las líneas que contengan coincidencias para la expresión regular.
+* **wc**, (word count) es un comando utilizado en el sistema operativo Unix que permite realizar diferentes conteos desde la entrada estándar, ya sea de palabras, caracteres o saltos de líneas.

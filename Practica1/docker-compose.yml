@@ -46,7 +46,7 @@ services:
   
   pcubuntu:
     container_name: pcubuntu
-    image: ubuntu
+    image: kevcalderon/script_practica1_201902714
     restart: on-failure
     command: ["sleep","infinity"]
     networks:

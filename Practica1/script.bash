@@ -15,5 +15,8 @@ echo "La cantidad de divisiones que hay en el archivo son: $(grep -c ',/,' histo
 echo "La cantidad de multiplicaciones que hay en el archivo son: $(grep '*' history.log | wc -l)"
 
 #Mostrar los logs del día de hoy.
-$fecha="13/02/2023"
-echo "La cantidad de logs segun la fecha $fecha fueron: $(grep -o $fecha history.log | wc -l)" 
+fecha="16/02/2023"
+grep -w -e $fecha history.log
+#la bandera -w es para buscar en palabra completa 
+#la bandera -e para especificar la expresion regular a buscar.
+

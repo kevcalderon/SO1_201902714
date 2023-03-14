@@ -1,0 +1,14 @@
+--LEVANTAR BASEMYSQL DOCKER
+
+
+--COMPILAR MODULOS KERNEL
+make all
+
+--VER MENSAJES
+sudo dmesg
+
+--INSERTAR MODULOS
+sudo insmod moduloRam.ko
+
+--REMOVER MODULOS
+sudo rmmod moduloRam.ko

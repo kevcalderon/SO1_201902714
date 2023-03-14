@@ -1,6 +1,7 @@
 package main
 
 import (
+	"database/sql"
 	"encoding/json"
 	"fmt"
 	"os/exec"
@@ -14,61 +15,56 @@ type RAM struct {
 	FreeRam  string `json:"freeram"`
 }
 
-/*
-func connectionDatabase() (db *sql.DB, e error) {
-	usuario := "root"
-	pass := "root"
-	host := "tcp(mysqldb:3306)"
-	nombreBaseDeDatos := "sopes1practica1db"
+var conn = MySQLConn()
 
-	db, err := sql.Open("mysql", fmt.Sprintf("%s:%s@%s/%s", usuario, pass, host, nombreBaseDeDatos))
+func MySQLConn() *sql.DB {
+	connString := "root:developer@tcp(104.154.38.60:3306)/practica2"
+	conn, err := sql.Open("mysql", connString)
 	if err != nil {
-		return nil, err
+		fmt.Println(err)
+	} else {
+		fmt.Println("Connection succesfull MySQL")
 	}
-	return db, nil
-
-}*/
+	return conn
+}
 
 func main() {
-	/*db, err := connectionDatabase()
-	if err != nil {
-		fmt.Println("Error obteniendo base de datos: %v", err)
-		return
-	}
-
-	// Terminar conexión al terminar función
-	defer db.Close()
-
-	// Ahora vemos si tenemos conexión
-	err = db.Ping()
-	if err != nil {
-		fmt.Println("Error conectando: %v", err)
-		return
-	}*/
 
 	i := 0
 	for i < 10 {
-		// MODULO DE RAM
 		cmd := exec.Command("sh", "-c", "cat /proc/ram_201902714")
 		out, err := cmd.CombinedOutput()
 		if err != nil {
 			fmt.Println(err)
 		}
-		output := string(out[:])
+		outputRam := string(out[:])
 		var ram RAM
-		json.Unmarshal([]byte(output), &ram)
-		fmt.Println(output)
+		json.Unmarshal([]byte(outputRam), &ram)
+		fmt.Println(outputRam)
 
+		cmd2 := exec.Command("sh", "-c", "cat /proc/cpu_201902714")
+		out2, err2 := cmd2.CombinedOutput()
+		if err2 != nil {
+			fmt.Println(err2)
+		}
+		outputCpu := string(out2[:])
+		//fmt.Println(output2)
+
+		/*cmd3:=exec.Command("sh","-c"," top -bn1 | awk '/Cpu/ { cpu = 100 - $8 }; END { print cpu }'")
+		      		out3,err3 := cmd3.CombinedOutput()
+		  		if err3 != nil {
+					fmt.Println(err3)
+				}
+				output3:= string(out3[:])
+		                fmt.Println(output3)*/
+
+		query := "update Dta SET ram='" + outputRam + "' ,cpu='" + outputCpu + "'  where  dta=1;"
+		result, err := conn.Query(query)
+		if err != nil {
+			fmt.Println(err)
+		}
+		fmt.Println(result)
 		time.Sleep(1 * time.Second)
-
-		/*
-			select Datos
-				ram = output1
-				cpu = output2
-				detalle = ouput3
-
-			actualizar siempre al where id=1
-		*/
 	}
 
 }

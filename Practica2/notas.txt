@@ -12,3 +12,6 @@ sudo insmod moduloRam.ko
 
 --REMOVER MODULOS
 sudo rmmod moduloRam.ko
+
+db-practica2
+developer

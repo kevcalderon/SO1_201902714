@@ -11,7 +11,7 @@ import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import Popover from "react-bootstrap/Popover";
 
 function App() {
-  const API_URL = "http://localhost:5000";
+  const API_URL = "http://34.125.152.92:5000";
   const [dataRam, setDataRam] = useState();
   const [dataCpu, setDataCpu] = useState();
   const [loading, setLoading] = useState(false);

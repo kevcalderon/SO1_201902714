@@ -9,8 +9,10 @@ sudo dmesg
 
 --INSERTAR MODULOS
 sudo insmod moduloRam.ko
+sudo insmod moduloCPU.ko
 
 --REMOVER MODULOS
+sudo rmmod moduloRam.ko
 sudo rmmod moduloRam.ko
 
 db-practica2

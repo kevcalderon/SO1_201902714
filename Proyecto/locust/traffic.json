@@ -1,0 +1,184 @@
+[
+  {
+    "sede": 5,
+    "departamento": "Quiché",
+    "municipio": "Santa Cruz del Quiché",
+    "papeleta": "verde",
+    "partido": "VAMOS"
+  },
+  {
+    "sede": 2,
+    "departamento": "Totonicapán",
+    "municipio": "Totonicapán",
+    "papeleta": "blanca",
+    "partido": "UNIONISTA"
+  },
+  {
+    "sede": 6,
+    "departamento": "Petén",
+    "municipio": "Flores",
+    "papeleta": "blanca",
+    "partido": "UNIONISTA"
+  },
+  {
+    "sede": 3,
+    "departamento": "Guatemala",
+    "municipio": "Guatemala",
+    "papeleta": "verde",
+    "partido": "FCN"
+  },
+  {
+    "sede": 4,
+    "departamento": "Huehuetenango",
+    "municipio": "Huehuetenango",
+    "papeleta": "blanca",
+    "partido": "UNIONISTA"
+  },
+  {
+    "sede": 3,
+    "departamento": "Jutiapa",
+    "municipio": "Jutiapa",
+    "papeleta": "blanca",
+    "partido": "FCN"
+  },
+  {
+    "sede": 5,
+    "departamento": "Baja Verapaz",
+    "municipio": "Salamá",
+    "papeleta": "verde",
+    "partido": "VALOR"
+  },
+  {
+    "sede": 5,
+    "departamento": "Escuintla",
+    "municipio": "Escuintla",
+    "papeleta": "verde",
+    "partido": "VALOR"
+  },
+  {
+    "sede": 3,
+    "departamento": "Escuintla",
+    "municipio": "Santa Lucía Cotzumalguapa",
+    "papeleta": "blanca",
+    "partido": "UNE"
+  },
+  {
+    "sede": 3,
+    "departamento": "Guatemala",
+    "municipio": "Mixco",
+    "papeleta": "rosada",
+    "partido": "VALOR"
+  },
+  {
+    "sede": 2,
+    "departamento": "Sololá",
+    "municipio": "Sololá",
+    "papeleta": "blanca",
+    "partido": "UNIONISTA"
+  },
+  {
+    "sede": 1,
+    "departamento": "Baja Verapaz",
+    "municipio": "San Jerónimo",
+    "papeleta": "verde",
+    "partido": "UNIONISTA"
+  },
+  {
+    "sede": 4,
+    "departamento": "Baja Verapaz",
+    "municipio": "Purulhá",
+    "papeleta": "rosada",
+    "partido": "VALOR"
+  },
+  {
+    "sede": 4,
+    "departamento": "Retalhuleu",
+    "municipio": "Retalhuleu",
+    "papeleta": "blanca",
+    "partido": "VALOR"
+  },
+  {
+    "sede": 4,
+    "departamento": "Zacapa",
+    "municipio": "Zacapa",
+    "papeleta": "blanca",
+    "partido": "FCN"
+  },
+  {
+    "sede": 4,
+    "departamento": "Guatemala",
+    "municipio": "Guatemala",
+    "papeleta": "rosada",
+    "partido": "UNIONISTA"
+  },
+  {
+    "sede": 1,
+    "departamento": "Zacapa",
+    "municipio": "Zacapa",
+    "papeleta": "rosada",
+    "partido": "UNIONISTA"
+  },
+  {
+    "sede": 4,
+    "departamento": "Jalapa",
+    "municipio": "Jalapa",
+    "papeleta": "rosada",
+    "partido": "UNE"
+  },
+  {
+    "sede": 5,
+    "departamento": "Huehuetenango",
+    "municipio": "Huehuetenango",
+    "papeleta": "blanca",
+    "partido": "UNE"
+  },
+  {
+    "sede": 2,
+    "departamento": "Alta Verapaz",
+    "municipio": "Cobán",
+    "papeleta": "blanca",
+    "partido": "VALOR"
+  },
+  {
+    "sede": 6,
+    "departamento": "Sololá",
+    "municipio": "Sololá",
+    "papeleta": "verde",
+    "partido": "VALOR"
+  },
+  {
+    "sede": 5,
+    "departamento": "Sacatepéquez",
+    "municipio": "Antigua Guatemala",
+    "papeleta": "blanca",
+    "partido": "VAMOS"
+  },
+  {
+    "sede": 6,
+    "departamento": "Quiché",
+    "municipio": "Santa Cruz del Quiché",
+    "papeleta": "verde",
+    "partido": "FCN"
+  },
+  {
+    "sede": 1,
+    "departamento": "Guatemala",
+    "municipio": "Guatemala",
+    "papeleta": "rosada",
+    "partido": "FCN"
+  },
+  {
+    "sede": 6,
+    "departamento": "Retalhuleu",
+    "municipio": "Retalhuleu",
+    "papeleta": "blanca",
+    "partido": "UNIONISTA"
+  },
+  {
+    "sede": 5,
+    "departamento": "Retalhuleu",
+    "municipio": "Retalhuleu",
+    "papeleta": "blanca",
+    "partido": "FCN"
+  }
+]

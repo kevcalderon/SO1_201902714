@@ -1,0 +1,28 @@
+## CREO MI GO MOD
+go mod init proyectoSo1
+## DESCARGO LA IMAGEN DE REDIS y de MYSQL
+docker pull redis
+docker pull mysql
+## LEVANTO LA IMAGEN DE REDIS EN EL PUERTO 6379
+docker run --name redis-test -p 6379:6379 -d redis
+docker run --name mysql-test -p 3306:3306 -e MYSQL_ROOT_PASSWORD=root -d mysql
+
+## ACCEDO A LA CONSOLA DE MI CONTENEDOR DE MYSQL
+docker exec -it mysql-test bash
+
+## INGRESO MIS CREDENCIALES DE MYSQL
+mysql -h localhost -u root -p  ## Despues de esto se ingresa la contraseña
+
+## LEVANTAR EL DOCKERFILE
+docker-compose up -d 
+
+
+## Entrar a la consola de redis
+docker exec -it redis sh
+redis-cli
+auth mypassword
+## VER LAS LLAVES
+keys *
+## VER LO QUE TENGA LA KEY 
+mget key
+

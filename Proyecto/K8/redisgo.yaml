@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gopubsub
+  namespace: sopes
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: gopubsub
+  template:
+    metadata:
+      labels:
+        app: gopubsub
+    spec:
+      containers:
+        - name: gopub-client
+          image: osmarsantizo/redisgo-publisher
+          ports:
+            - containerPort: 4001
+        - name: gosub-server
+          image: osmarsantizo/redisgo-subscriber
+          ports:
+            - containerPort: 50052
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: gosub-server
+  namespace: sopes
+spec:
+  selector:
+    app: gopubsub
+  ports:
+    - name: gopubsub
+      port: 50052
+      targetPort: 50052
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: gopub-client
+  namespace: sopes
+spec:
+  selector:
+    app: gopubsub
+  ports:
+    - name: gopub-client
+      port: 4001
+      targetPort: 4001
+  type: LoadBalancer

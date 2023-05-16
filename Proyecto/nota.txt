@@ -1,0 +1,19 @@
+-GRPC 
+*hacer antes npm install
+
+-LEVANTAR GRPC-SERVER
+node grpc_server.js
+
+-LEVANTAR GRPC-CLIENT
+node api_server.js
+
+-LEVANTAR LOCUST
+locust -f traffic.py
+
+
+kubectl exec -it mysqldb-58f679f65c-25mtj -- mysql -u root -p
+kubectl logs grpc-84dd5c744b-cbl6g -c grpc-client
+kubectl exec -it redis-5c56fc547b-4xhr9 sh
+redis-cli
+auth mypassword
+ALTER USER 'root'@'%' IDENTIFIED WITH mysql_native_password BY 'root';

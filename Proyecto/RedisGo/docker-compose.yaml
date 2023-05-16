@@ -1,0 +1,60 @@
+version : "3"
+
+services:
+  redis:
+    container_name: "redis"
+    image: redis:alpine
+    # Le indico que redis-server corra con la configuración que creamos
+    command: redis-server /usr/local/etc/redis/redis.conf 
+    volumes:
+    - ./redis/data:/data  ## Lo utilizamos para la persistencia de la data
+    - ./redis/conf:/usr/local/etc/redis ## LO utilizamos para configurar redis
+    ports:
+      - "6379:6379"
+    networks:
+      - data_sharing
+
+  # mysql:
+  #   container_name: dbmysql
+  #   image: mysql
+  #   environment: 
+  #     MYSQL_ROOT_PASSWORD: root
+  #     MYSQL_DATABASE: proyectosopes
+  #   ports:
+  #     - '3306:33060'
+  #   networks:
+  #     - data_sharing
+  #   volumes:
+  #     - ./db_data:/var/lib/mysql
+
+  publisher:
+    container_name: "pub" 
+    restart: always
+    ports:
+      - '8080:8080'
+    build:
+      context: ./publisher
+      dockerfile: Dockerfile
+    depends_on:
+      - redis
+    networks:
+      - data_sharing
+      
+  subscriber:
+    container_name: "sub"
+    build:
+      context: ./subscriber
+      dockerfile: Dockerfile
+    depends_on: 
+      - redis
+      - publisher 
+    networks:
+      - data_sharing
+
+networks:
+  data_sharing:
+    driver: bridge
+
+volumes:
+  db_data: 
+ 

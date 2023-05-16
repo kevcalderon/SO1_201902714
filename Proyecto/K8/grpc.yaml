@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: grpc
+  namespace: sopes
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: grpc
+  template:
+    metadata:
+      labels:
+        app: grpc
+    spec:
+      containers:
+        - name: grpc-client
+          image: kevcalderon/grpc-client
+          ports:
+            - containerPort: 4000
+        - name: grpc-server
+          image: kevcalderon/grpc-server
+          ports:
+            - containerPort: 50051
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: grpc-server
+  namespace: sopes
+spec:
+  selector:
+    app: grpc
+  ports:
+    - name: grpc
+      port: 50051
+      targetPort: 50051
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: grpc-client
+  namespace: sopes
+spec:
+  selector:
+    app: grpc
+  ports:
+    - name: grpc-client
+      port: 4000
+      targetPort: 4000
+  type: LoadBalancer
